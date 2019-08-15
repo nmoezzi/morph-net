@@ -504,6 +504,19 @@ def get_op_size(op):
     return sum([output_tensor.shape.as_list()[-1]
                 for output_tensor in op.outputs])
   # For regular ops, return the size of the first output tensor.
+  if (op.outputs[0].shape == None):
+#       print (" op = ", op)
+#       print (" op.outputs = ", op.outputs)
+#       print (" op.outputs[0].name = ", op.outputs[0].name)
+#       test = tf.get_default_graph().get_tensor_by_name(op.outputs[0].name)
+#       a = tf.Variable(1.0, tf.float64)      
+#       shape = a.shape
+#       tf.reshape(test, shape)   
+
+#       test.set_shape([None])
+#       print (" op.outputs[0].shape = \n", op.outputs[0].shape)
+       return 0
+
   shape = op.outputs[0].shape.as_list()
   if shape:
     return shape[-1]

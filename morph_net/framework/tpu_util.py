@@ -58,8 +58,6 @@ def maybe_convert_to_variable(tensor):
     return the original input tensor.
   """
   op = tensor.op
-  if is_on_cpu() and tensor in var_store:
-    return var_store[tensor]
   if op.type != 'ReadVariableOp':
     # No need to convert.
     return tensor
@@ -104,9 +102,7 @@ def write_to_variable(tensor):
         use_resource=True)
   var_store[tensor] = variable
   with tf.control_dependencies([variable.assign(tensor)]):
-    tensor_copy = tf.identity(tensor)
-  var_store[tensor_copy] = variable
-  return tensor_copy
+    return tf.identity(tensor)
 
 
 def read_from_variable(tensor):
@@ -117,8 +113,3 @@ def read_from_variable(tensor):
   else:
     # Current read, but only works on TPU.
     return tensor
-
-
-def is_intermediate_var(v):
-  """Returns True if `v` was created by `write_to_variable` above."""
-  return v in var_store.values()
