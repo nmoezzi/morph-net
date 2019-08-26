@@ -17,6 +17,7 @@ from morph_net.network_regularizers import cost_calculator
 from morph_net.network_regularizers import resource_function
 import tensorflow as tf
 from typing import Type, List
+from morph_net.framework import output_non_passthrough_op_handler
 
 
 class GammaFlopsRegularizer(generic_regularizers.NetworkRegularizer):
@@ -62,6 +63,16 @@ class GammaFlopsRegularizer(generic_regularizers.NetworkRegularizer):
         'FusedBatchNorm': source_op_handler,
         'FusedBatchNormV2': source_op_handler,
         'FusedBatchNormV3': source_op_handler,
+        'IGNORE': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'Switch': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'Merge': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'Mean': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'Squeeze': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'norm_feature': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'Maximum': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'Rsqrt': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'Sum': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'Mul': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
     })
 
     self._manager = orm.OpRegularizerManager(
@@ -147,6 +158,11 @@ class GroupLassoFlopsRegularizer(generic_regularizers.NetworkRegularizer):
         'Conv2D': conv2d_handler,
         'Conv2DBackpropInput': conv2d_transpose_handler,
         'MatMul': matmul_handler,
+        'norm_feature': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'Maximum': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'Rsqrt': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'Sum': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
+        'Mul': output_non_passthrough_op_handler.OutputNonPassthroughOpHandler(),
     })
 
     self._manager = orm.OpRegularizerManager(
